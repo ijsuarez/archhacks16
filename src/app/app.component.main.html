@@ -1,0 +1,68 @@
+<md-sidenav-layout>
+  <md-toolbar color="primary">
+    ArchHacks 2016 App Thing
+  </md-toolbar>
+
+  <div class="app-content">
+
+    <md-card class="app-input-section" style="width: 33%">
+      <md-input>
+        <md-placeholder>
+          <i class="material-icons app-input-icon">local_hospital</i> Input Medication
+        </md-placeholder>
+      </md-input>
+      <button md-raised-button color="primary" style="float: right">Submit</button>
+    </md-card>
+
+    <div layout="row">
+      <div flex>
+        <md-card>
+          <h3>I'm using...</h3>
+        </md-card>
+      </div>
+      <div flex>
+        <md-card>
+          <h3>I could be using...</h3>
+        </md-card>
+      </div>
+      <div flex>
+        <md-card>
+          <h3>Which would save...</h3>
+        </md-card>
+      </div>
+    </div>
+
+
+    <div layout="row">
+      <div flex>
+        <md-card *ngFor="let item of items | async">
+          <md-card-title-group>
+            <img md-card-md-image src="https://pbs.twimg.com/profile_images/378800000822867536/3f5a00acf72df93528b6bb7cd0a4fd0c.jpeg">
+            <md-card-title>{{item.$key}}</md-card-title>
+            <md-card-subtitle>Medium</md-card-subtitle>
+            <md-card-subtitle style="font-size: 150%; color: green">$2.00/g</md-card-subtitle>
+          </md-card-title-group>
+          <md-card-actions layout="row" layout-align="end center">
+            <button md-button>Action 1</button>
+            <button md-button>Action 2</button>
+          </md-card-actions>
+        </md-card>
+      </div>
+      <div flex>
+        <md-card *ngFor="let item of items | async">
+          Jinerik Dugsxz
+          <br/>
+          {{item.$key}}
+        </md-card>
+      </div>
+      <div flex>
+        <md-card *ngFor="let item of items | async">
+          Jinerik Dugsxz
+          <br/>
+          {{item.$key}}
+        </md-card>
+      </div>
+    </div>
+
+  </div>
+</md-sidenav-layout>

@@ -3,7 +3,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 @Component({
   selector: 'material2-app-app',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.main.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {

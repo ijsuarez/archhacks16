@@ -1,0 +1,7 @@
+//uhh nts chnge this before app is published
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
