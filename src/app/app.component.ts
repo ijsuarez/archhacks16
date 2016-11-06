@@ -100,7 +100,7 @@ export class AppComponent {
             };
             var duplicate = false;
             for (var result of this.drugResults) {
-              if (drugEquals(result, drug)) {
+              if (drugEquals(result, drug) || drugEquals(this.drugQueries[this.selectFirst],drug)) {
                 duplicate = true;
                 break;
               }
