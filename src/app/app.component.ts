@@ -14,8 +14,8 @@ export class AppComponent {
   af: AngularFire;
   items: FirebaseListObservable<any[]>;
 
-  selectFirst: number;
-  selectSecond: number;
+  selectFirst: number = -1;
+  selectSecond: number = -1;
 
   constructor(af: AngularFire) {
     this.af = af;
@@ -27,6 +27,13 @@ export class AppComponent {
   }
 
   remove(idx: number) {
+    if (this.selectFirst == idx) {
+      this.selectFirst = -1;
+      this.selectSecond = -1;
+      this.items = this.af.database.list('/empty');
+    } else if (this.selectFirst > idx) {
+      this.selectFirst = this.selectFirst - 1;
+    }
     this.queries.splice(idx, 1);
   }
 
