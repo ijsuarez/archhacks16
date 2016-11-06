@@ -1,14 +1,32 @@
 import { Component } from '@angular/core';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
+export class Drug {
+  name: string;
+  cost: number;
+  img: string;
+  isBrand: boolean;
+  iupac: string;
+
+}
+
+export function drugEquals(drug1: Drug, drug2: Drug) {
+  return (drug1.name == drug2.name) && (drug1.cost == drug2.cost) &&
+         (drug1.img == drug2.img) && (drug1.isBrand == drug2.isBrand) &&
+         (drug1.iupac == drug2.iupac);
+}
+
+
 @Component({
   selector: 'material2-app-app',
   templateUrl: './app.component.main.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  drugQueries: Drug[] = [];
+  drugResults: Drug[] = [];
+
   submission: string = "";
-  queries: string[] = [];
   savings: number = 0.00;
 
   af: AngularFire;
@@ -21,8 +39,28 @@ export class AppComponent {
     this.af = af;
   }
 
-  addQuery(event:any) {
-    this.queries.push(this.submission);
+  addQuery() {
+    this.af.database.object('/drugs/'.concat(this.submission), {preserveSnapshot: true})
+      .subscribe(snapshot=>{
+          var drug: Drug = {
+            name: snapshot.key,
+            cost: snapshot.val().cost,
+            img: snapshot.val().img,
+            isBrand: snapshot.val().brand,
+            iupac: snapshot.val().iupac
+          };
+          var duplicate = false;
+          for (var query of this.drugQueries) {
+            if (drugEquals(query, drug)) {
+              duplicate = true;
+              break;
+            }
+          }
+          if (!duplicate) {
+            this.drugQueries.push(drug);
+          }
+      })
+
     this.submission = "";
   }
 
@@ -30,20 +68,50 @@ export class AppComponent {
     if (this.selectFirst == idx) {
       this.selectFirst = -1;
       this.selectSecond = -1;
-      this.items = this.af.database.list('/empty');
+      this.drugResults = [];
     } else if (this.selectFirst > idx) {
       this.selectFirst = this.selectFirst - 1;
     }
-    this.queries.splice(idx, 1);
+    this.drugQueries.splice(idx, 1);
   }
 
   computeSavings(idx: number) {
     this.selectSecond = idx;
-    this.savings = this.selectSecond - this.selectFirst;
+    this.savings = this.drugQueries[this.selectFirst].cost - this.drugResults[this.selectSecond].cost;
   }
 
   findGenerics(idx: number) {
+    this.drugResults = [];
+
     this.selectFirst = idx;
-    this.items = this.af.database.list('/drugs');
+    this.selectSecond = -1;
+    var activeIngredient = this.drugQueries[idx].iupac;
+
+    this.af.database.list('/drugs', {preserveSnapshot: true})
+      .subscribe(snapshots=>{
+        snapshots.forEach(snapshot=>{
+          if (snapshot.val().iupac == activeIngredient) {
+            var drug: Drug = {
+              name: snapshot.key,
+              cost: snapshot.val().cost,
+              img: snapshot.val().img,
+              isBrand: snapshot.val().brand,
+              iupac: snapshot.val().iupac
+            };
+            var duplicate = false;
+            for (var result of this.drugResults) {
+              if (drugEquals(result, drug)) {
+                duplicate = true;
+                break;
+              }
+            }
+            if (!duplicate) {
+              this.drugResults.push(drug);
+            }
+          }
+        });
+      })
   }
+
+
 }

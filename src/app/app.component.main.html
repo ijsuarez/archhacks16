@@ -1,6 +1,6 @@
 <md-sidenav-layout>
   <md-toolbar color="primary">
-    ArchHacks 2016 App Thing
+    GeneRx - Small Difference, Big Savings
   </md-toolbar>
 
   <div class="app-content">
@@ -37,12 +37,12 @@
 
     <div layout="row">
       <div flex>
-        <md-card *ngFor="let item of queries; let idx = index;">
+        <md-card *ngFor="let item of drugQueries; let idx = index;">
           <md-card-title-group>
-            <img md-card-md-image src="https://pbs.twimg.com/profile_images/378800000822867536/3f5a00acf72df93528b6bb7cd0a4fd0c.jpeg">
-            <md-card-title>{{item}}</md-card-title>
-            <md-card-subtitle>Medium</md-card-subtitle>
-            <md-card-subtitle style="font-size: 150%; color: green">$2.00/g</md-card-subtitle>
+            <img md-card-md-image src="{{item.img}}">
+            <md-card-title>{{item.name}}</md-card-title>
+            <md-card-subtitle>{{item.iupac}}</md-card-subtitle>
+            <md-card-subtitle style="font-size: 150%; color: green">${{item.cost}}/gram</md-card-subtitle>
           </md-card-title-group>
           <md-card-actions>
             <button md-raised-button (click)="findGenerics(idx)">Select</button>
@@ -52,12 +52,12 @@
         </md-card>
       </div>
       <div flex>
-        <md-card *ngFor="let item of (items | async); let idx = index;">
+        <md-card *ngFor="let item of drugResults; let idx = index;">
           <md-card-title-group>
-            <img md-card-md-image src="https://pbs.twimg.com/profile_images/378800000822867536/3f5a00acf72df93528b6bb7cd0a4fd0c.jpeg">
-            <md-card-title>{{item.$key}}</md-card-title>
-            <md-card-subtitle>Medium</md-card-subtitle>
-            <md-card-subtitle style="font-size: 150%; color: green">$2.00/g</md-card-subtitle>
+            <img md-card-md-image src="{{item.img}}">
+            <md-card-title>{{item.name}}</md-card-title>
+            <md-card-subtitle>{{item.iupac}}</md-card-subtitle>
+            <md-card-subtitle style="font-size: 150%; color: green">${{item.cost}}/gram</md-card-subtitle>
           </md-card-title-group>
           <md-card-actions>
             <button md-raised-button (click)="computeSavings(idx)">Select</button>
@@ -67,7 +67,7 @@
       </div>
       <div flex>
         <md-card *ngIf="selectFirst != -1 && selectSecond != -1">
-          <md-card-content style="color: green"><h1>${{savings}}</h1></md-card-content>
+          <md-card-content style="color: green"><h1>${{savings}}/gram</h1></md-card-content>
         </md-card>
       </div>
     </div>
