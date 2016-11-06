@@ -110,6 +110,11 @@ export class AppComponent {
             }
           }
         });
+        for (var i = 0; i < this.drugResults.length; i++) {
+          if (drugEquals(this.drugResults[i], this.drugQueries[this.selectFirst])) {
+            this.drugResults.splice(i, 1);
+          }
+        }
       })
   }
 

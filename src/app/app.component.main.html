@@ -19,7 +19,7 @@
     <div layout="row">
       <div flex>
         <md-card>
-          <h3>I'm using...</h3>
+          <h3>Medicines I'm using...</h3>
         </md-card>
       </div>
       <div flex>
@@ -28,8 +28,11 @@
         </md-card>
       </div>
       <div flex>
-        <md-card>
+        <md-card *ngIf="savings >= 0">
           <h3>Which would save...</h3>
+        </md-card>
+        <md-card *ngIf="savings < 0">
+          <h3>Which would lose...</h3>
         </md-card>
       </div>
     </div>
@@ -67,7 +70,11 @@
       </div>
       <div flex>
         <md-card *ngIf="selectFirst != -1 && selectSecond != -1">
-          <md-card-content style="color: green"><h1>${{savings}}/gram</h1></md-card-content>
+          <md-card-content *ngIf="savings >= 0" style="color: green"><h1>${{savings}}/gram</h1></md-card-content>
+          <md-card-content *ngIf="savings < 0" style="color: red">
+            <h1>${{savings*-1}}/gram</h1>
+            <p>Consider choosing a different generic!</p>
+          </md-card-content>
         </md-card>
       </div>
     </div>
