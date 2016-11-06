@@ -10,6 +10,17 @@ export class Drug {
 
 }
 
+export function drugCompare(drug1: Drug, drug2: Drug) {
+  if (drug1.cost < drug2.cost) {
+    return -1;
+  }
+  if (drug1.cost > drug2.cost) {
+    return 1;
+  }
+  return 0;
+}
+
+
 export function drugEquals(drug1: Drug, drug2: Drug) {
   return (drug1.name == drug2.name) && (drug1.cost == drug2.cost) &&
          (drug1.img == drug2.img) && (drug1.isBrand == drug2.isBrand) &&
@@ -113,8 +124,10 @@ export class AppComponent {
         for (var i = 0; i < this.drugResults.length; i++) {
           if (drugEquals(this.drugResults[i], this.drugQueries[this.selectFirst])) {
             this.drugResults.splice(i, 1);
+            break;
           }
         }
+        this.drugResults.sort(drugCompare);
       })
   }
 
