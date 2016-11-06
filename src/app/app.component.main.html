@@ -6,12 +6,14 @@
   <div class="app-content">
 
     <md-card class="app-input-section" style="width: 33%">
-      <md-input>
+      <form (ngSubmit)="addQuery()">
+      <md-input [(ngModel)]="submission" name="query">
         <md-placeholder>
           <i class="material-icons app-input-icon">local_hospital</i> Input Medication
         </md-placeholder>
       </md-input>
       <button md-raised-button color="primary" style="float: right">Submit</button>
+      </form>
     </md-card>
 
     <div layout="row">
@@ -35,31 +37,37 @@
 
     <div layout="row">
       <div flex>
-        <md-card *ngFor="let item of items | async">
+        <md-card *ngFor="let item of queries; let idx = index;">
+          <md-card-title-group>
+            <img md-card-md-image src="https://pbs.twimg.com/profile_images/378800000822867536/3f5a00acf72df93528b6bb7cd0a4fd0c.jpeg">
+            <md-card-title>{{item}}</md-card-title>
+            <md-card-subtitle>Medium</md-card-subtitle>
+            <md-card-subtitle style="font-size: 150%; color: green">$2.00/g</md-card-subtitle>
+          </md-card-title-group>
+          <md-card-actions>
+            <button md-raised-button (click)="findGenerics(idx)">Select</button>
+            <button md-raised-button (click)="remove(idx)" color="accent">Remove</button>
+            <i *ngIf="idx == selectFirst" class=material-icons style="float: right">done</i>
+          </md-card-actions>
+        </md-card>
+      </div>
+      <div flex>
+        <md-card *ngFor="let item of (items | async); let idx = index;">
           <md-card-title-group>
             <img md-card-md-image src="https://pbs.twimg.com/profile_images/378800000822867536/3f5a00acf72df93528b6bb7cd0a4fd0c.jpeg">
             <md-card-title>{{item.$key}}</md-card-title>
             <md-card-subtitle>Medium</md-card-subtitle>
             <md-card-subtitle style="font-size: 150%; color: green">$2.00/g</md-card-subtitle>
           </md-card-title-group>
-          <md-card-actions layout="row" layout-align="end center">
-            <button md-button>Action 1</button>
-            <button md-button>Action 2</button>
+          <md-card-actions>
+            <button md-raised-button (click)="computeSavings(idx)">Select</button>
+            <i *ngIf="idx == selectSecond" class=material-icons style="float: right">done</i>
           </md-card-actions>
         </md-card>
       </div>
       <div flex>
-        <md-card *ngFor="let item of items | async">
-          Jinerik Dugsxz
-          <br/>
-          {{item.$key}}
-        </md-card>
-      </div>
-      <div flex>
-        <md-card *ngFor="let item of items | async">
-          Jinerik Dugsxz
-          <br/>
-          {{item.$key}}
+        <md-card>
+          <md-card-content style="color: green"><h1>${{savings}}</h1></md-card-content>
         </md-card>
       </div>
     </div>

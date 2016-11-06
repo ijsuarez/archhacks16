@@ -7,29 +7,36 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  isDarkTheme: boolean = false;
+  submission: string = "";
+  queries: string[] = [];
+  savings: number = 0.00;
 
-  foods: any[] = [
-    {name: 'Pizza', rating: 'Excellent'},
-    {name: 'Burritos', rating: 'Great'},
-    {name: 'French fries', rating: 'Pretty good'},
-  ];
-
-  progress: number = 0;
-
-  dummy: number = 0;
-
+  af: AngularFire;
   items: FirebaseListObservable<any[]>;
 
+  selectFirst: number;
+  selectSecond: number;
+
   constructor(af: AngularFire) {
-    this.items = af.database.list('/drugs');
-    // Update the value for the progress-bar on an interval.
-    setInterval(() => {
-      this.progress = (this.progress + Math.floor(Math.random() * 4) + 1) % 100;
-    }, 200);
+    this.af = af;
   }
 
-  testFunction(event:any) {
-    this.dummy = event.target.value;
+  addQuery(event:any) {
+    this.queries.push(this.submission);
+    this.submission = "";
+  }
+
+  remove(idx: number) {
+    this.queries.splice(idx, 1);
+  }
+
+  computeSavings(idx: number) {
+    this.selectSecond = idx;
+    this.savings = this.selectSecond - this.selectFirst;
+  }
+
+  findGenerics(idx: number) {
+    this.selectFirst = idx;
+    this.items = this.af.database.list('/drugs');
   }
 }
